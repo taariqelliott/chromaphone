@@ -60,7 +60,7 @@ export const Key: React.FC<KeyProps> = ({
       <meshStandardMaterial
         color={color}
         emissive={new THREE.Color(color)}
-        emissiveIntensity={isDown ? 12 : hovered ? 2 : 0.6}
+        emissiveIntensity={isDown ? 13 : hovered ? 2 : 0.7}
       />
     </mesh>
   );
