@@ -9,15 +9,22 @@ function App() {
           position: "fixed",
           bottom: "30px",
           width: "100%",
-          textAlign: "center",
-          color: "rgba(255,255,255,0.4)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "8px",
+          color: "rgba(255,255,255,0.5)",
           fontFamily: "monospace",
           pointerEvents: "none",
           textTransform: "uppercase",
           letterSpacing: "2px",
+          fontSize: "12px",
         }}
       >
-        Keys: Z-M | A-L | Q-Y
+        <div>Play: Z-M | A-L | Q-O</div>
+        <div style={{ opacity: 1, fontSize: "10px" }}>
+          Orbit: Left Click to Rotate • Scroll to Zoom
+        </div>
       </div>
     </main>
   );

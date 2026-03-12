@@ -33,7 +33,6 @@ for (let i = 0; i < 25; i++) {
   samples[NOTE_NAMES[i]] = `${i + 1}.wav`;
 }
 
-// Added a limiter to prevent distortion when playing multiple notes
 const limiter = new Tone.Limiter(-6).toDestination();
 
 const sampler = new Tone.Sampler({
@@ -45,6 +44,5 @@ const sampler = new Tone.Sampler({
 export const playSound = async (id: number) => {
   if (Tone.getContext().state !== "running") await Tone.start();
   const noteToPlay = NOTE_NAMES[id - 1];
-  // Trigger original pitch by targeting the specific mapped note
   sampler.triggerAttackRelease(noteToPlay, "2n");
 };

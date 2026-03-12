@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
+import { useRef, useState } from "react";
 import * as THREE from "three";
 import { playSound } from "./AudioManager";
 
@@ -27,7 +27,6 @@ export const Key: React.FC<KeyProps> = ({
   useFrame(() => {
     if (!meshRef.current) return;
 
-    // Smooth movement logic
     const targetY = isDown ? -0.5 : 0;
     meshRef.current.position.y = THREE.MathUtils.lerp(
       meshRef.current.position.y,
@@ -35,7 +34,6 @@ export const Key: React.FC<KeyProps> = ({
       0.2
     );
 
-    // Smooth scaling logic
     const targetScale = hovered ? 1.1 : 1.0;
     meshRef.current.scale.setScalar(
       THREE.MathUtils.lerp(meshRef.current.scale.x, targetScale, 0.15)

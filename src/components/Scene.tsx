@@ -1,10 +1,18 @@
-import { useMemo, useState, useEffect } from "react";
-import { Canvas } from "@react-three/fiber";
-import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { OrbitControls } from "@react-three/drei";
-import { Key } from "./Key";
-import { playSound } from "./AudioManager";
+import { Canvas } from "@react-three/fiber";
+import {
+  Bloom,
+  ChromaticAberration,
+  DepthOfField,
+  EffectComposer,
+  Noise,
+  Pixelation,
+} from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
+import { useEffect, useMemo, useState } from "react";
 import type { KeyData } from "../types";
+import { playSound } from "./AudioManager";
+import { Key } from "./Key";
 
 const KEYBOARD_MAP: Record<string, number> = {
   z: 1,
@@ -14,26 +22,25 @@ const KEYBOARD_MAP: Record<string, number> = {
   b: 5,
   n: 6,
   m: 7,
-  ",": 8,
-  ".": 9,
-  "/": 10,
-  a: 11,
-  s: 12,
-  d: 13,
-  f: 14,
-  g: 15,
-  h: 16,
-  j: 17,
-  k: 18,
-  l: 19,
-  q: 20,
-  w: 21,
-  e: 22,
-  r: 23,
-  t: 24,
-  y: 25,
+  a: 8,
+  s: 9,
+  d: 10,
+  f: 11,
+  g: 12,
+  h: 13,
+  j: 14,
+  k: 15,
+  l: 16,
+  q: 17,
+  w: 18,
+  e: 19,
+  r: 20,
+  t: 21,
+  y: 22,
+  u: 23,
+  i: 24,
+  o: 25,
 };
-
 export const Scene = () => {
   const [activeColor, setActiveColor] = useState("#000000");
   const [pressedId, setPressedId] = useState<number | null>(null);
@@ -77,14 +84,13 @@ export const Scene = () => {
           makeDefault
           minPolarAngle={0}
           maxPolarAngle={Math.PI / 2.1}
+          enablePan={false}
         />
-        <ambientLight intensity={0.4} />
-        <pointLight position={[0, 10, 5]} intensity={2} />
 
         {keys.map((k, i) => (
           <Key
             key={k.id}
-            position={[(i - 12) * 1.05, 0, 0]}
+            position={[(i - 12) * 1, 0, 0]}
             id={k.id}
             color={k.color}
             setActiveColor={setActiveColor}
@@ -94,10 +100,17 @@ export const Scene = () => {
 
         <EffectComposer>
           <Bloom
-            luminanceThreshold={0.1}
+            luminanceThreshold={0.01}
             intensity={2.0}
             mipmapBlur
-            radius={0.5}
+            radius={0.9}
+          />
+          <Noise opacity={0.1} />
+          <DepthOfField bokehScale={1} />
+          <Pixelation granularity={0.5} />
+          <ChromaticAberration
+            blendFunction={BlendFunction.NORMAL}
+            offset={[0.001, 0.0001]}
           />
         </EffectComposer>
       </Canvas>
