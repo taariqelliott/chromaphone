@@ -1,13 +1,14 @@
 import { useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import * as THREE from "three";
-import { playSound } from "./AudioManager";
+import { playSound, NOTE_NAMES } from "./AudioManager";
 
 interface KeyProps {
   position: [number, number, number];
   id: number;
   color: string;
   setActiveColor: (color: string) => void;
+  setActiveNote: (note: string) => void;
   isExternalPressed?: boolean;
 }
 
@@ -16,6 +17,7 @@ export const Key: React.FC<KeyProps> = ({
   id,
   color,
   setActiveColor,
+  setActiveNote,
   isExternalPressed,
 }) => {
   const meshRef = useRef<THREE.Mesh>(null!);
@@ -45,6 +47,7 @@ export const Key: React.FC<KeyProps> = ({
     setInternalPressed(true);
     playSound(id);
     setActiveColor(color);
+    setActiveNote(NOTE_NAMES[id - 1]);
     setTimeout(() => setInternalPressed(false), 150);
   };
 

@@ -11,7 +11,7 @@ import {
 import { BlendFunction } from "postprocessing";
 import { useEffect, useMemo, useState } from "react";
 import type { KeyData } from "../types";
-import { playSound } from "./AudioManager";
+import { playSound, NOTE_NAMES } from "./AudioManager";
 import { Key } from "./Key";
 
 const KEYBOARD_MAP: Record<string, number> = {
@@ -41,9 +41,11 @@ const KEYBOARD_MAP: Record<string, number> = {
   i: 24,
   o: 25,
 };
+
 export const Scene = () => {
   const [activeColor, setActiveColor] = useState("#000000");
   const [pressedId, setPressedId] = useState<number | null>(null);
+  const [activeNote, setActiveNote] = useState<string>("--");
 
   const keys: KeyData[] = useMemo(() => {
     return Array.from({ length: 25 }, (_, i) => ({
@@ -58,6 +60,7 @@ export const Scene = () => {
       if (id) {
         playSound(id);
         setActiveColor(keys[id - 1].color);
+        setActiveNote(NOTE_NAMES[id - 1]);
         setPressedId(id);
         setTimeout(
           () => setPressedId((prev) => (prev === id ? null : prev)),
@@ -65,6 +68,7 @@ export const Scene = () => {
         );
       }
     };
+
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [keys]);
@@ -77,6 +81,7 @@ export const Scene = () => {
         background: `radial-gradient(circle at center, ${activeColor}77 0%, #000000 100%)`,
         transition: "background 0.5s ease-out",
         overflow: "hidden",
+        position: "relative",
       }}
     >
       <Canvas camera={{ position: [0, 12, 30], fov: 35 }}>
@@ -94,6 +99,7 @@ export const Scene = () => {
             id={k.id}
             color={k.color}
             setActiveColor={setActiveColor}
+            setActiveNote={setActiveNote}
             isExternalPressed={pressedId === k.id}
           />
         ))}
@@ -114,6 +120,26 @@ export const Scene = () => {
           />
         </EffectComposer>
       </Canvas>
+
+      <div
+        style={{
+          position: "fixed",
+          bottom: "78px",
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          color: "white",
+          fontFamily: "monospace",
+          pointerEvents: "none",
+          textTransform: "uppercase",
+          letterSpacing: "4px",
+          fontSize: "22px",
+          fontWeight: 700,
+          textShadow: "0 0 12px rgba(255,255,255,0.5)",
+        }}
+      >
+        {activeNote}
+      </div>
     </div>
   );
 };

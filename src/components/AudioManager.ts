@@ -1,6 +1,6 @@
 import * as Tone from "tone";
 
-const NOTE_NAMES = [
+export const NOTE_NAMES = [
   "C1",
   "C#1",
   "D1",
