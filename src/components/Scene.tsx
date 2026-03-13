@@ -50,7 +50,7 @@ export const Scene = () => {
   const keys: KeyData[] = useMemo(() => {
     return Array.from({ length: 25 }, (_, i) => ({
       id: i + 1,
-      color: `hsl(${(i / 25) * 360}, 85%, 60%)`,
+      color: `hsl(${(i / 25) * 360}, 80%, 50%)`,
     }));
   }, []);
 
@@ -90,6 +90,7 @@ export const Scene = () => {
           minPolarAngle={0}
           maxPolarAngle={Math.PI / 2.1}
           enablePan={false}
+          dampingFactor={0.005}
         />
 
         {keys.map((k, i) => (
